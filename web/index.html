@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+</head>
+<body>
+    <button id="github">Github</button>
+    <button id="twitter">Twitter</button>
+    <hr>
+    <button id="github-link">Link Github</button>
+    <button id="twitter-link">Link Twitter</button>
+   
+    <script>
+!function() {
+    var config = {
+    };
+    firebase.initializeApp(config);
+    document.getElementById("github").addEventListener("click", function(e) {
+        var provider = new firebase.auth.GithubAuthProvider();
+        provider.addScope('read:user');
+        firebase.auth().signInWithRedirect(provider);
+    });
+
+    document.getElementById("twitter").addEventListener("click", function(e) {
+        var provider = new firebase.auth.TwitterAuthProvider();
+        firebase.auth().signInWithRedirect(provider);
+    });
+
+    document.getElementById("github-link").addEventListener("click", function(e) {
+        var provider = new firebase.auth.GithubAuthProvider();
+        firebase.auth().currentUser.linkWithRedirect(provider);
+    });
+
+    document.getElementById("twitter-link").addEventListener("click", function(e) {
+        var provider = new firebase.auth.TwitterAuthProvider();
+        firebase.auth().currentUser.linkWithRedirect(provider);
+    });
+
+    firebase.auth().getRedirectResult().then(function(result) {
+        console.log(firebase.auth().currentUser);
+        console.log(result);
+    }).catch(function(error) {
+        console.log(firebase.auth().currentUser);
+        console.log(error);
+    });
+
+}();
+    </script>
+
+</body>
+</html>
